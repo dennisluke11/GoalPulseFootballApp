@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.example.goalpulse.ui.strings.Strings
 import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.League
@@ -32,10 +33,10 @@ fun LeagueDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("League Details") },
+                title = { Text(Strings.LEAGUE_DETAILS) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = Strings.BACK)
                     }
                 }
             )
@@ -48,7 +49,7 @@ fun LeagueDetailScreen(
                     .padding(paddingValues),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Failed to load league details")
+                Text(Strings.FAILED_LOAD_LEAGUE)
             }
         } else {
             Column(
@@ -79,7 +80,7 @@ fun LeagueDetailScreen(
                         }
                         
                         Text(
-                            text = league.league?.name ?: "Unknown League",
+                            text = league.league?.name ?: Strings.UNKNOWN_LEAGUE,
                             fontSize = Dimens.textTitle,
                             fontWeight = FontWeight.Bold
                         )
@@ -105,15 +106,15 @@ fun LeagueDetailScreen(
                         verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                     ) {
                         Text(
-                            text = "League Information",
+                            text = Strings.LEAGUE_INFORMATION,
                             fontSize = Dimens.textLarge,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = Dimens.spacingSmall)
                         )
                         
-                        DetailRow("League ID", league.league?.id?.toString() ?: "N/A")
-                        DetailRow("Name", league.league?.name ?: "N/A")
-                        DetailRow("Type", league.league?.type ?: "N/A")
+                        DetailRow(Strings.LEAGUE_ID, league.league?.id?.toString() ?: Strings.NOT_AVAILABLE)
+                        DetailRow(Strings.NAME, league.league?.name ?: Strings.NOT_AVAILABLE)
+                        DetailRow(Strings.TYPE, league.league?.type ?: Strings.NOT_AVAILABLE)
                     }
                 }
                 
@@ -129,7 +130,7 @@ fun LeagueDetailScreen(
                             verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                         ) {
                             Text(
-                                text = "Country Information",
+                                text = Strings.COUNTRY_INFORMATION,
                                 fontSize = Dimens.textLarge,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(bottom = Dimens.spacingSmall)
@@ -146,16 +147,16 @@ fun LeagueDetailScreen(
                                         modifier = Modifier.size(Dimens.imageSmall)
                                     )
                                     Text(
-                                        text = country.name ?: "Unknown",
+                                        text = country.name ?: Strings.UNKNOWN,
                                         fontSize = Dimens.textMedium,
                                         fontWeight = FontWeight.Medium
                                     )
                                 }
                             } ?: run {
-                                DetailRow("Country", country.name ?: "N/A")
+                                DetailRow(Strings.COUNTRY, country.name ?: Strings.NOT_AVAILABLE)
                             }
                             
-                            DetailRow("Country Code", country.code ?: "N/A")
+                            DetailRow(Strings.COUNTRY_CODE, country.code ?: Strings.NOT_AVAILABLE)
                         }
                     }
                 }

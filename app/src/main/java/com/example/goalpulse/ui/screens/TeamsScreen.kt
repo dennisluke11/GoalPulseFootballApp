@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.example.goalpulse.ui.strings.Strings
 import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.Team
@@ -37,10 +38,10 @@ fun TeamsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Football Teams") },
+                title = { Text(Strings.FOOTBALL_TEAMS) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = Strings.BACK)
                     }
                 }
             )
@@ -64,9 +65,9 @@ fun TeamsScreen(
                 viewModel.searchTeams(query)
             },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("Search teams...") },
+            placeholder = { Text(Strings.SEARCH_TEAMS_PLACEHOLDER) },
             leadingIcon = {
-                Icon(Icons.Default.Search, contentDescription = "Search")
+                Icon(Icons.Default.Search, contentDescription = Strings.SEARCH)
             },
             singleLine = true,
             shape = RoundedCornerShape(Dimens.cornerRadiusSmall)
@@ -80,7 +81,7 @@ fun TeamsScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Start searching for teams")
+                    Text(Strings.START_SEARCHING_TEAMS)
                 }
             }
             is TeamsUiState.Loading -> {
@@ -97,7 +98,7 @@ fun TeamsScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("No teams found")
+                        Text(Strings.NO_TEAMS_FOUND)
                     }
                 } else {
                     LazyColumn(
@@ -132,7 +133,7 @@ fun TeamsScreen(
                         )
                         Spacer(modifier = Modifier.height(Dimens.paddingDefault))
                         Button(onClick = { viewModel.searchTeams(searchQuery) }) {
-                            Text("Retry")
+                            Text(Strings.RETRY)
                         }
                     }
                 }
@@ -173,7 +174,7 @@ fun TeamItem(
             
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = team.team?.name ?: "Unknown",
+                    text = team.team?.name ?: Strings.UNKNOWN,
                     fontSize = Dimens.textMedium,
                     fontWeight = FontWeight.Bold
                 )

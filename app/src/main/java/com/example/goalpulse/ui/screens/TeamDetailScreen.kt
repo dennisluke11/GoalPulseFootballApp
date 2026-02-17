@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.example.goalpulse.ui.strings.Strings
 import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.Team
@@ -32,10 +33,10 @@ fun TeamDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Team Details") },
+                title = { Text(Strings.TEAM_DETAILS) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = Strings.BACK)
                     }
                 }
             )
@@ -48,7 +49,7 @@ fun TeamDetailScreen(
                     .padding(paddingValues),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Failed to load team details")
+                Text(Strings.FAILED_LOAD_TEAM)
             }
         } else {
             Column(
@@ -79,7 +80,7 @@ fun TeamDetailScreen(
                         }
                         
                         Text(
-                            text = team.team?.name ?: "Unknown Team",
+                            text = team.team?.name ?: Strings.UNKNOWN_TEAM,
                             fontSize = Dimens.textTitle,
                             fontWeight = FontWeight.Bold
                         )
@@ -106,21 +107,21 @@ fun TeamDetailScreen(
                         verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                     ) {
                         Text(
-                            text = "Team Information",
+                            text = Strings.TEAM_INFORMATION,
                             fontSize = Dimens.textLarge,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = Dimens.spacingSmall)
                         )
                         
-                        DetailRow("Team ID", team.team?.id?.toString() ?: "N/A")
-                        DetailRow("Name", team.team?.name ?: "N/A")
-                        DetailRow("Code", team.team?.code ?: "N/A")
-                        DetailRow("Country", team.team?.country ?: "N/A")
+                        DetailRow(Strings.TEAM_ID, team.team?.id?.toString() ?: Strings.NOT_AVAILABLE)
+                        DetailRow(Strings.NAME, team.team?.name ?: Strings.NOT_AVAILABLE)
+                        DetailRow(Strings.CODE, team.team?.code ?: Strings.NOT_AVAILABLE)
+                        DetailRow(Strings.COUNTRY, team.team?.country ?: Strings.NOT_AVAILABLE)
                         team.team?.founded?.let { founded ->
-                            DetailRow("Founded", founded.toString())
+                            DetailRow(Strings.FOUNDED, founded.toString())
                         }
                         team.team?.national?.let { national ->
-                            DetailRow("National Team", if (national) "Yes" else "No")
+                            DetailRow(Strings.NATIONAL_TEAM, if (national) Strings.YES else Strings.NO)
                         }
                     }
                 }
@@ -137,7 +138,7 @@ fun TeamDetailScreen(
                             verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                         ) {
                             Text(
-                                text = "Venue Information",
+                                text = Strings.VENUE_INFORMATION,
                                 fontSize = Dimens.textLarge,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(bottom = Dimens.spacingSmall)
@@ -151,13 +152,13 @@ fun TeamDetailScreen(
                                 )
                             }
                             
-                            DetailRow("Venue ID", venue.id?.toString() ?: "N/A")
-                            DetailRow("Address", venue.address ?: "N/A")
-                            DetailRow("City", venue.city ?: "N/A")
+                            DetailRow(Strings.VENUE_ID, venue.id?.toString() ?: Strings.NOT_AVAILABLE)
+                            DetailRow(Strings.ADDRESS, venue.address ?: Strings.NOT_AVAILABLE)
+                            DetailRow(Strings.CITY, venue.city ?: Strings.NOT_AVAILABLE)
                             venue.capacity?.let { capacity ->
-                                DetailRow("Capacity", "$capacity")
+                                DetailRow(Strings.CAPACITY, "$capacity")
                             }
-                            DetailRow("Surface", venue.surface ?: "N/A")
+                            DetailRow(Strings.SURFACE, venue.surface ?: Strings.NOT_AVAILABLE)
                             
                             venue.image?.let { imageUrl ->
                                 Spacer(modifier = Modifier.height(Dimens.spacingSmall))

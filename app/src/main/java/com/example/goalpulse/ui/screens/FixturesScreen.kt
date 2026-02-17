@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.example.goalpulse.ui.strings.Strings
 import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.Fixture
@@ -37,10 +38,10 @@ fun FixturesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Football Fixtures") },
+                title = { Text(Strings.FOOTBALL_FIXTURES) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = Strings.BACK)
                     }
                 }
             )
@@ -63,7 +64,7 @@ fun FixturesScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Loading fixtures...")
+                    Text(Strings.LOADING_FIXTURES)
                 }
             }
             is FixturesUiState.Loading -> {
@@ -80,7 +81,7 @@ fun FixturesScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("No fixtures found")
+                        Text(Strings.NO_FIXTURES_FOUND)
                     }
                 } else {
                     LazyColumn(
@@ -115,7 +116,7 @@ fun FixturesScreen(
                         )
                         Spacer(modifier = Modifier.height(Dimens.paddingDefault))
                         Button(onClick = { viewModel.loadFixtures() }) {
-                            Text("Retry")
+                            Text(Strings.RETRY)
                         }
                     }
                 }
@@ -151,7 +152,7 @@ fun FixtureItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = league.name ?: "Unknown League",
+                        text = league.name ?: Strings.UNKNOWN_LEAGUE,
                         fontSize = Dimens.textSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary

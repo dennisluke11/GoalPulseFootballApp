@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.example.goalpulse.ui.strings.Strings
 import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.Fixture
@@ -34,10 +35,10 @@ fun FixtureDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Fixture Details") },
+                title = { Text(Strings.FIXTURE_DETAILS) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = Strings.BACK)
                     }
                 }
             )
@@ -50,7 +51,7 @@ fun FixtureDetailScreen(
                     .padding(paddingValues),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Failed to load fixture details")
+                Text(Strings.FAILED_LOAD_FIXTURE)
             }
         } else {
             Column(
@@ -74,7 +75,7 @@ fun FixtureDetailScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = league.name ?: "Unknown League",
+                                text = league.name ?: Strings.UNKNOWN_LEAGUE,
                                 fontSize = Dimens.textMedium,
                                 fontWeight = FontWeight.Bold
                             )
@@ -118,7 +119,7 @@ fun FixtureDetailScreen(
                                 }
                                 Spacer(modifier = Modifier.height(Dimens.spacingSmall))
                                 Text(
-                                    text = fixture.teams?.home?.name ?: "Home",
+                                    text = fixture.teams?.home?.name ?: Strings.HOME,
                                     fontSize = Dimens.textDefault,
                                     fontWeight = FontWeight.Medium,
                                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -135,7 +136,7 @@ fun FixtureDetailScreen(
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
-                                        text = "vs",
+                                        text = Strings.VS,
                                         fontSize = Dimens.textSmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -146,7 +147,7 @@ fun FixtureDetailScreen(
                                     )
                                 } ?: run {
                                     Text(
-                                        text = "vs",
+                                        text = Strings.VS,
                                         fontSize = Dimens.textXLarge,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -166,7 +167,7 @@ fun FixtureDetailScreen(
                                 }
                                 Spacer(modifier = Modifier.height(Dimens.spacingSmall))
                                 Text(
-                                    text = fixture.teams?.away?.name ?: "Away",
+                                    text = fixture.teams?.away?.name ?: Strings.AWAY,
                                     fontSize = Dimens.textDefault,
                                     fontWeight = FontWeight.Medium,
                                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -188,24 +189,24 @@ fun FixtureDetailScreen(
                             verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                         ) {
                             Text(
-                                text = "Match Information",
+                                text = Strings.MATCH_INFORMATION,
                                 fontSize = Dimens.textLarge,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(bottom = Dimens.spacingSmall)
                             )
                             
-                            DetailRow("Fixture ID", fixtureInfo.id.toString())
+                            DetailRow(Strings.FIXTURE_ID, fixtureInfo.id.toString())
                             fixtureInfo.date?.let { date ->
-                                DetailRow("Date", formatDate(date))
+                                DetailRow(Strings.DATE, formatDate(date))
                             }
                             fixtureInfo.status?.let { status ->
-                                DetailRow("Status", status.long ?: status.short ?: "N/A")
+                                DetailRow(Strings.STATUS, status.long ?: status.short ?: Strings.NOT_AVAILABLE)
                                 status.elapsed?.let { elapsed ->
-                                    DetailRow("Elapsed Time", "$elapsed minutes")
+                                    DetailRow(Strings.ELAPSED_TIME, "$elapsed ${Strings.MINUTES}")
                                 }
                             }
-                            DetailRow("Referee", fixtureInfo.referee ?: "N/A")
-                            DetailRow("Timezone", fixtureInfo.timezone ?: "N/A")
+                            DetailRow(Strings.REFEREE, fixtureInfo.referee ?: Strings.NOT_AVAILABLE)
+                            DetailRow(Strings.TIMEZONE, fixtureInfo.timezone ?: Strings.NOT_AVAILABLE)
                         }
                     }
                 }
@@ -222,17 +223,17 @@ fun FixtureDetailScreen(
                             verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                         ) {
                             Text(
-                                text = "Venue Information",
+                                text = Strings.VENUE_INFORMATION,
                                 fontSize = Dimens.textLarge,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(bottom = Dimens.spacingSmall)
                             )
                             
-                            DetailRow("Venue", venue.name ?: "N/A")
-                            DetailRow("Address", venue.address ?: "N/A")
-                            DetailRow("City", venue.city ?: "N/A")
+                            DetailRow(Strings.VENUE, venue.name ?: Strings.NOT_AVAILABLE)
+                            DetailRow(Strings.ADDRESS, venue.address ?: Strings.NOT_AVAILABLE)
+                            DetailRow(Strings.CITY, venue.city ?: Strings.NOT_AVAILABLE)
                             venue.capacity?.let { capacity ->
-                                DetailRow("Capacity", "$capacity")
+                                DetailRow(Strings.CAPACITY, "$capacity")
                             }
                         }
                     }
@@ -250,17 +251,17 @@ fun FixtureDetailScreen(
                             verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                         ) {
                             Text(
-                                text = "Score Details",
+                                text = Strings.SCORE_DETAILS,
                                 fontSize = Dimens.textLarge,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(bottom = Dimens.spacingSmall)
                             )
                             
                             score.fulltime?.let { fulltime ->
-                                DetailRow("Full Time", "${fulltime.home ?: "-"} - ${fulltime.away ?: "-"}")
+                                DetailRow(Strings.FULL_TIME, "${fulltime.home ?: "-"} - ${fulltime.away ?: "-"}")
                             }
                             score.halftime?.let { halftime ->
-                                DetailRow("Half Time", "${halftime.home ?: "-"} - ${halftime.away ?: "-"}")
+                                DetailRow(Strings.HALF_TIME, "${halftime.home ?: "-"} - ${halftime.away ?: "-"}")
                             }
                         }
                     }

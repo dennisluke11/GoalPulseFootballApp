@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.example.goalpulse.ui.strings.Strings
 import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.League
@@ -33,10 +34,10 @@ fun LeaguesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Football Leagues") },
+                title = { Text(Strings.FOOTBALL_LEAGUES) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = Strings.BACK)
                     }
                 }
             )
@@ -60,9 +61,9 @@ fun LeaguesScreen(
                 viewModel.searchLeagues(query)
             },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("Search leagues...") },
+            placeholder = { Text(Strings.SEARCH_LEAGUES_PLACEHOLDER) },
             leadingIcon = {
-                Icon(Icons.Default.Search, contentDescription = "Search")
+                Icon(Icons.Default.Search, contentDescription = Strings.SEARCH)
             },
             singleLine = true,
             shape = RoundedCornerShape(Dimens.cornerRadiusSmall)
@@ -76,7 +77,7 @@ fun LeaguesScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Start searching for leagues")
+                    Text(Strings.START_SEARCHING_LEAGUES)
                 }
             }
             is LeaguesUiState.Loading -> {
@@ -93,7 +94,7 @@ fun LeaguesScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("No leagues found")
+                        Text(Strings.NO_LEAGUES_FOUND)
                     }
                 } else {
                     LazyColumn(
@@ -128,7 +129,7 @@ fun LeaguesScreen(
                         )
                         Spacer(modifier = Modifier.height(Dimens.paddingDefault))
                         Button(onClick = { viewModel.loadAllLeagues() }) {
-                            Text("Retry")
+                            Text(Strings.RETRY)
                         }
                     }
                 }
@@ -169,7 +170,7 @@ fun LeagueItem(
             
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = league.league?.name ?: "Unknown",
+                    text = league.league?.name ?: Strings.UNKNOWN,
                     fontSize = Dimens.textMedium,
                     fontWeight = FontWeight.Bold
                 )

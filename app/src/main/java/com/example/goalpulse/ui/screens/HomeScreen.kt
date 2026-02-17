@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.example.goalpulse.ui.strings.Strings
 import com.example.goalpulse.ui.theme.Dimens
 
 @Composable
@@ -23,7 +24,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "GoalPulse",
+            text = Strings.APP_NAME,
             fontSize = Dimens.textHuge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
@@ -32,7 +33,7 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(Dimens.spacingSmall))
         
         Text(
-            text = "Your Football Companion",
+            text = Strings.APP_TAGLINE,
             fontSize = Dimens.textDefault,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -40,24 +41,24 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(Dimens.spacingXXLarge))
         
         NavigationCard(
-            title = "Leagues",
-            description = "Search and explore football leagues",
+            title = Strings.LEAGUES,
+            description = Strings.SEARCH_LEAGUES_DESC,
             onClick = onNavigateToLeagues
         )
         
         Spacer(modifier = Modifier.height(Dimens.paddingDefault))
         
         NavigationCard(
-            title = "Teams",
-            description = "Search and discover teams",
+            title = Strings.TEAMS,
+            description = Strings.SEARCH_TEAMS_DESC,
             onClick = onNavigateToTeams
         )
         
         Spacer(modifier = Modifier.height(Dimens.paddingDefault))
         
         NavigationCard(
-            title = "Fixtures",
-            description = "View upcoming matches",
+            title = Strings.FIXTURES,
+            description = Strings.VIEW_FIXTURES_DESC,
             onClick = onNavigateToFixtures
         )
     }
