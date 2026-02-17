@@ -11,8 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.Fixture
 import com.google.gson.Gson
@@ -59,31 +58,31 @@ fun FixtureDetailScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                    .padding(Dimens.paddingDefault),
+                verticalArrangement = Arrangement.spacedBy(Dimens.paddingDefault)
             ) {
                 fixture.league?.let { league ->
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(Dimens.cornerRadiusSmall)
                     ) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(Dimens.paddingDefault),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 text = league.name ?: "Unknown League",
-                                fontSize = 18.sp,
+                                fontSize = Dimens.textMedium,
                                 fontWeight = FontWeight.Bold
                             )
                             league.logo?.let { logoUrl ->
                                 AsyncImage(
                                     model = logoUrl,
                                     contentDescription = league.name,
-                                    modifier = Modifier.size(40.dp)
+                                    modifier = Modifier.size(Dimens.iconLarge)
                                 )
                             }
                         }
@@ -92,14 +91,14 @@ fun FixtureDetailScreen(
                 
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(Dimens.cornerRadiusMedium)
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(24.dp),
+                            .padding(Dimens.paddingLarge),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                        verticalArrangement = Arrangement.spacedBy(Dimens.paddingDefault)
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -114,13 +113,13 @@ fun FixtureDetailScreen(
                                     AsyncImage(
                                         model = logoUrl,
                                         contentDescription = fixture.teams?.home?.name,
-                                        modifier = Modifier.size(80.dp)
+                                        modifier = Modifier.size(Dimens.imageLarge)
                                     )
                                 }
-                                Spacer(modifier = Modifier.height(8.dp))
+                                Spacer(modifier = Modifier.height(Dimens.spacingSmall))
                                 Text(
                                     text = fixture.teams?.home?.name ?: "Home",
-                                    fontSize = 16.sp,
+                                    fontSize = Dimens.textDefault,
                                     fontWeight = FontWeight.Medium,
                                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
                                 )
@@ -132,23 +131,23 @@ fun FixtureDetailScreen(
                                 fixture.goals?.let { goals ->
                                     Text(
                                         text = "${goals.home ?: "-"}",
-                                        fontSize = 32.sp,
+                                        fontSize = Dimens.textHuge,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
                                         text = "vs",
-                                        fontSize = 14.sp,
+                                        fontSize = Dimens.textSmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
                                         text = "${goals.away ?: "-"}",
-                                        fontSize = 32.sp,
+                                        fontSize = Dimens.textHuge,
                                         fontWeight = FontWeight.Bold
                                     )
                                 } ?: run {
                                     Text(
                                         text = "vs",
-                                        fontSize = 24.sp,
+                                        fontSize = Dimens.textXLarge,
                                         fontWeight = FontWeight.Bold
                                     )
                                 }
@@ -162,13 +161,13 @@ fun FixtureDetailScreen(
                                     AsyncImage(
                                         model = logoUrl,
                                         contentDescription = fixture.teams?.away?.name,
-                                        modifier = Modifier.size(80.dp)
+                                        modifier = Modifier.size(Dimens.imageLarge)
                                     )
                                 }
-                                Spacer(modifier = Modifier.height(8.dp))
+                                Spacer(modifier = Modifier.height(Dimens.spacingSmall))
                                 Text(
                                     text = fixture.teams?.away?.name ?: "Away",
-                                    fontSize = 16.sp,
+                                    fontSize = Dimens.textDefault,
                                     fontWeight = FontWeight.Medium,
                                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
                                 )
@@ -180,19 +179,19 @@ fun FixtureDetailScreen(
                 fixture.fixture?.let { fixtureInfo ->
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(Dimens.cornerRadiusSmall)
                     ) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                                .padding(Dimens.paddingDefault),
+                            verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                         ) {
                             Text(
                                 text = "Match Information",
-                                fontSize = 20.sp,
+                                fontSize = Dimens.textLarge,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(bottom = 8.dp)
+                                modifier = Modifier.padding(bottom = Dimens.spacingSmall)
                             )
                             
                             DetailRow("Fixture ID", fixtureInfo.id.toString())
@@ -214,19 +213,19 @@ fun FixtureDetailScreen(
                 fixture.fixture?.venue?.let { venue ->
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(Dimens.cornerRadiusSmall)
                     ) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                                .padding(Dimens.paddingDefault),
+                            verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                         ) {
                             Text(
                                 text = "Venue Information",
-                                fontSize = 20.sp,
+                                fontSize = Dimens.textLarge,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(bottom = 8.dp)
+                                modifier = Modifier.padding(bottom = Dimens.spacingSmall)
                             )
                             
                             DetailRow("Venue", venue.name ?: "N/A")
@@ -242,19 +241,19 @@ fun FixtureDetailScreen(
                 fixture.score?.let { score ->
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(Dimens.cornerRadiusSmall)
                     ) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                                .padding(Dimens.paddingDefault),
+                            verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                         ) {
                             Text(
                                 text = "Score Details",
-                                fontSize = 20.sp,
+                                fontSize = Dimens.textLarge,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(bottom = 8.dp)
+                                modifier = Modifier.padding(bottom = Dimens.spacingSmall)
                             )
                             
                             score.fulltime?.let { fulltime ->
@@ -279,13 +278,13 @@ private fun DetailRow(label: String, value: String) {
     ) {
         Text(
             text = label,
-            fontSize = 14.sp,
+            fontSize = Dimens.textSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )
         Text(
             text = value,
-            fontSize = 14.sp,
+            fontSize = Dimens.textSmall,
             fontWeight = FontWeight.Medium,
             modifier = Modifier.weight(1f)
         )

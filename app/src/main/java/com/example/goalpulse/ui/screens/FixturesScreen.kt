@@ -5,13 +5,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.Fixture
 import com.example.goalpulse.ui.viewmodel.FootballViewModel
@@ -19,10 +20,12 @@ import com.example.goalpulse.ui.viewmodel.FixturesUiState
 import java.text.SimpleDateFormat
 import java.util.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FixturesScreen(
     viewModel: FootballViewModel,
     onNavigateToDetail: (String) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val fixturesState by viewModel.fixturesState.collectAsState()
@@ -31,17 +34,28 @@ fun FixturesScreen(
         viewModel.loadFixtures(leagueId = 39)
     }
     
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text(
-            text = "Football Fixtures",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Football Fixtures") },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(
+                    start = Dimens.paddingDefault,
+                    end = Dimens.paddingDefault,
+                    bottom = Dimens.paddingDefault
+                )
+        ) {
         
         when (val state = fixturesState) {
             is FixturesUiState.Idle -> {
@@ -70,7 +84,7 @@ fun FixturesScreen(
                     }
                 } else {
                     LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                        verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                     ) {
                         items(state.fixtures) { fixture ->
                             FixtureItem(
@@ -91,7 +105,7 @@ fun FixturesScreen(
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(Dimens.paddingDefault)
                     ) {
                         Text(
                             text = state.message,
@@ -99,13 +113,14 @@ fun FixturesScreen(
                             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(Dimens.paddingDefault))
                         Button(onClick = { viewModel.loadFixtures() }) {
                             Text("Retry")
                         }
                     }
                 }
             }
+        }
         }
     }
 }
@@ -119,7 +134,7 @@ fun FixtureItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(Dimens.cornerRadiusSmall),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
@@ -127,7 +142,7 @@ fun FixtureItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(Dimens.paddingDefault)
         ) {
             fixture.league?.let { league ->
                 Row(
@@ -137,7 +152,7 @@ fun FixtureItem(
                 ) {
                     Text(
                         text = league.name ?: "Unknown League",
-                        fontSize = 14.sp,
+                        fontSize = Dimens.textSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -145,11 +160,11 @@ fun FixtureItem(
                         AsyncImage(
                             model = logoUrl,
                             contentDescription = league.name,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(Dimens.iconSmall)
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(Dimens.spacingSmall))
             }
             
             Row(
@@ -169,18 +184,18 @@ fun FixtureItem(
                                 AsyncImage(
                                     model = logoUrl,
                                     contentDescription = homeTeam.name,
-                                    modifier = Modifier.size(32.dp)
+                                    modifier = Modifier.size(Dimens.imageSmall)
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
+                                Spacer(modifier = Modifier.width(Dimens.spacingSmall))
                             }
                             Text(
                                 text = homeTeam.name,
-                                fontSize = 16.sp,
+                                fontSize = Dimens.textDefault,
                                 fontWeight = FontWeight.Medium
                             )
                         }
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(Dimens.spacingSmall))
                     fixture.teams?.away?.let { awayTeam ->
                         Row(
                             verticalAlignment = Alignment.CenterVertically
@@ -189,13 +204,13 @@ fun FixtureItem(
                                 AsyncImage(
                                     model = logoUrl,
                                     contentDescription = awayTeam.name,
-                                    modifier = Modifier.size(32.dp)
+                                    modifier = Modifier.size(Dimens.imageSmall)
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
+                                Spacer(modifier = Modifier.width(Dimens.spacingSmall))
                             }
                             Text(
                                 text = awayTeam.name,
-                                fontSize = 16.sp,
+                                fontSize = Dimens.textDefault,
                                 fontWeight = FontWeight.Medium
                             )
                         }
@@ -208,34 +223,34 @@ fun FixtureItem(
                     fixture.goals?.let { goals ->
                         Text(
                             text = "${goals.home ?: "-"}",
-                            fontSize = 20.sp,
+                            fontSize = Dimens.textLarge,
                             fontWeight = FontWeight.Bold
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(Dimens.spacingSmall))
                         Text(
                             text = "${goals.away ?: "-"}",
-                            fontSize = 20.sp,
+                            fontSize = Dimens.textLarge,
                             fontWeight = FontWeight.Bold
                         )
                     } ?: run {
                         Text(
                             text = "-",
-                            fontSize = 20.sp
+                            fontSize = Dimens.textLarge
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(Dimens.spacingSmall))
                         Text(
                             text = "-",
-                            fontSize = 20.sp
+                            fontSize = Dimens.textLarge
                         )
                     }
                 }
             }
             
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(Dimens.spacingSmall))
             
             Divider()
             
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(Dimens.spacingSmall))
             
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -244,14 +259,14 @@ fun FixtureItem(
                 fixture.fixture?.date?.let { dateString ->
                     Text(
                         text = formatDate(dateString),
-                        fontSize = 12.sp,
+                        fontSize = Dimens.textExtraSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                     )
                 }
                 fixture.fixture?.status?.short?.let { status ->
                     Text(
                         text = status,
-                        fontSize = 12.sp,
+                        fontSize = Dimens.textExtraSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                     )
                 }

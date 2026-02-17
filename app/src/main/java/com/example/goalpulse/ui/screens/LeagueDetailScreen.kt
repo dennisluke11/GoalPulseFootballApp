@@ -11,8 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.League
 import com.google.gson.Gson
@@ -57,38 +56,38 @@ fun LeagueDetailScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                    .padding(Dimens.paddingDefault),
+                verticalArrangement = Arrangement.spacedBy(Dimens.paddingDefault)
             ) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(Dimens.cornerRadiusMedium)
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(24.dp),
+                            .padding(Dimens.paddingLarge),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                        verticalArrangement = Arrangement.spacedBy(Dimens.paddingDefault)
                     ) {
                         league.league?.logo?.let { logoUrl ->
                             AsyncImage(
                                 model = logoUrl,
                                 contentDescription = league.league?.name,
-                                modifier = Modifier.size(120.dp)
+                                modifier = Modifier.size(Dimens.iconHuge)
                             )
                         }
                         
                         Text(
                             text = league.league?.name ?: "Unknown League",
-                            fontSize = 28.sp,
+                            fontSize = Dimens.textTitle,
                             fontWeight = FontWeight.Bold
                         )
                         
                         league.league?.type?.let { type ->
                             Text(
                                 text = type,
-                                fontSize = 16.sp,
+                                fontSize = Dimens.textDefault,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
@@ -97,19 +96,19 @@ fun LeagueDetailScreen(
                 
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(Dimens.cornerRadiusSmall)
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                            .padding(Dimens.paddingDefault),
+                        verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                     ) {
                         Text(
                             text = "League Information",
-                            fontSize = 20.sp,
+                            fontSize = Dimens.textLarge,
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = Dimens.spacingSmall)
                         )
                         
                         DetailRow("League ID", league.league?.id?.toString() ?: "N/A")
@@ -121,34 +120,34 @@ fun LeagueDetailScreen(
                 league.country?.let { country ->
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(Dimens.cornerRadiusSmall)
                     ) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                                .padding(Dimens.paddingDefault),
+                            verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                         ) {
                             Text(
                                 text = "Country Information",
-                                fontSize = 20.sp,
+                                fontSize = Dimens.textLarge,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(bottom = 8.dp)
+                                modifier = Modifier.padding(bottom = Dimens.spacingSmall)
                             )
                             
                             country.flag?.let { flagUrl ->
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                    horizontalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                                 ) {
                                     AsyncImage(
                                         model = flagUrl,
                                         contentDescription = country.name,
-                                        modifier = Modifier.size(32.dp)
+                                        modifier = Modifier.size(Dimens.imageSmall)
                                     )
                                     Text(
                                         text = country.name ?: "Unknown",
-                                        fontSize = 18.sp,
+                                        fontSize = Dimens.textMedium,
                                         fontWeight = FontWeight.Medium
                                     )
                                 }
@@ -173,13 +172,13 @@ private fun DetailRow(label: String, value: String) {
     ) {
         Text(
             text = label,
-            fontSize = 14.sp,
+            fontSize = Dimens.textSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )
         Text(
             text = value,
-            fontSize = 14.sp,
+            fontSize = Dimens.textSmall,
             fontWeight = FontWeight.Medium,
             modifier = Modifier.weight(1f)
         )

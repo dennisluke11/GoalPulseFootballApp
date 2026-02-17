@@ -66,7 +66,8 @@ fun GoalPulseNavigation() {
                 viewModel = viewModel,
                 onNavigateToDetail = { leagueJson ->
                     navController.navigate(Screen.LeagueDetail.createRoute(leagueJson))
-                }
+                },
+                onBackClick = { navController.popBackStack() }
             )
         }
         
@@ -75,7 +76,8 @@ fun GoalPulseNavigation() {
                 viewModel = viewModel,
                 onNavigateToDetail = { teamJson ->
                     navController.navigate(Screen.TeamDetail.createRoute(teamJson))
-                }
+                },
+                onBackClick = { navController.popBackStack() }
             )
         }
         
@@ -84,7 +86,8 @@ fun GoalPulseNavigation() {
                 viewModel = viewModel,
                 onNavigateToDetail = { fixtureJson ->
                     navController.navigate(Screen.FixtureDetail.createRoute(fixtureJson))
-                }
+                },
+                onBackClick = { navController.popBackStack() }
             )
         }
         

@@ -11,8 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.Team
 import com.google.gson.Gson
@@ -57,38 +56,38 @@ fun TeamDetailScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                    .padding(Dimens.paddingDefault),
+                verticalArrangement = Arrangement.spacedBy(Dimens.paddingDefault)
             ) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(Dimens.cornerRadiusMedium)
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(24.dp),
+                            .padding(Dimens.paddingLarge),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                        verticalArrangement = Arrangement.spacedBy(Dimens.paddingDefault)
                     ) {
                         team.team?.logo?.let { logoUrl ->
                             AsyncImage(
                                 model = logoUrl,
                                 contentDescription = team.team?.name,
-                                modifier = Modifier.size(120.dp)
+                                modifier = Modifier.size(Dimens.iconHuge)
                             )
                         }
                         
                         Text(
                             text = team.team?.name ?: "Unknown Team",
-                            fontSize = 28.sp,
+                            fontSize = Dimens.textTitle,
                             fontWeight = FontWeight.Bold
                         )
                         
                         team.team?.code?.let { code ->
                             Text(
                                 text = code,
-                                fontSize = 18.sp,
+                                fontSize = Dimens.textMedium,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Medium
                             )
@@ -98,19 +97,19 @@ fun TeamDetailScreen(
                 
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(Dimens.cornerRadiusSmall)
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                            .padding(Dimens.paddingDefault),
+                        verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                     ) {
                         Text(
                             text = "Team Information",
-                            fontSize = 20.sp,
+                            fontSize = Dimens.textLarge,
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = Dimens.spacingSmall)
                         )
                         
                         DetailRow("Team ID", team.team?.id?.toString() ?: "N/A")
@@ -129,25 +128,25 @@ fun TeamDetailScreen(
                 team.venue?.let { venue ->
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(Dimens.cornerRadiusSmall)
                     ) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                                .padding(Dimens.paddingDefault),
+                            verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                         ) {
                             Text(
                                 text = "Venue Information",
-                                fontSize = 20.sp,
+                                fontSize = Dimens.textLarge,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(bottom = 8.dp)
+                                modifier = Modifier.padding(bottom = Dimens.spacingSmall)
                             )
                             
                             venue.name?.let { name ->
                                 Text(
                                     text = name,
-                                    fontSize = 18.sp,
+                                    fontSize = Dimens.textMedium,
                                     fontWeight = FontWeight.Medium
                                 )
                             }
@@ -161,13 +160,13 @@ fun TeamDetailScreen(
                             DetailRow("Surface", venue.surface ?: "N/A")
                             
                             venue.image?.let { imageUrl ->
-                                Spacer(modifier = Modifier.height(8.dp))
+                                Spacer(modifier = Modifier.height(Dimens.spacingSmall))
                                 AsyncImage(
                                     model = imageUrl,
                                     contentDescription = venue.name,
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .height(200.dp)
+                                        .height(Dimens.imageDetail)
                                 )
                             }
                         }
@@ -186,13 +185,13 @@ private fun DetailRow(label: String, value: String) {
     ) {
         Text(
             text = label,
-            fontSize = 14.sp,
+            fontSize = Dimens.textSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )
         Text(
             text = value,
-            fontSize = 14.sp,
+            fontSize = Dimens.textSmall,
             fontWeight = FontWeight.Medium,
             modifier = Modifier.weight(1f)
         )

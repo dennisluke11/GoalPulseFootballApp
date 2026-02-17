@@ -6,14 +6,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.League
 import com.example.goalpulse.ui.viewmodel.FootballViewModel
@@ -24,22 +24,34 @@ import com.example.goalpulse.ui.viewmodel.LeaguesUiState
 fun LeaguesScreen(
     viewModel: FootballViewModel,
     onNavigateToDetail: (String) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val leaguesState by viewModel.leaguesState.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
     
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text(
-            text = "Football Leagues",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Football Leagues") },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(
+                    start = Dimens.paddingDefault,
+                    end = Dimens.paddingDefault,
+                    bottom = Dimens.paddingDefault
+                )
+        ) {
         
         OutlinedTextField(
             value = searchQuery,
@@ -53,10 +65,10 @@ fun LeaguesScreen(
                 Icon(Icons.Default.Search, contentDescription = "Search")
             },
             singleLine = true,
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(Dimens.cornerRadiusSmall)
         )
         
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(Dimens.paddingDefault))
         
         when (val state = leaguesState) {
             is LeaguesUiState.Idle -> {
@@ -85,7 +97,7 @@ fun LeaguesScreen(
                     }
                 } else {
                     LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                        verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                     ) {
                         items(state.leagues) { league ->
                             LeagueItem(
@@ -106,7 +118,7 @@ fun LeaguesScreen(
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(Dimens.paddingDefault)
                     ) {
                         Text(
                             text = state.message,
@@ -114,13 +126,14 @@ fun LeaguesScreen(
                             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(Dimens.paddingDefault))
                         Button(onClick = { viewModel.loadAllLeagues() }) {
                             Text("Retry")
                         }
                     }
                 }
             }
+        }
         }
     }
 }
@@ -134,7 +147,7 @@ fun LeagueItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(Dimens.cornerRadiusSmall),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
@@ -142,28 +155,28 @@ fun LeagueItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(Dimens.paddingDefault),
             verticalAlignment = Alignment.CenterVertically
         ) {
             league.league?.logo?.let { logoUrl ->
                 AsyncImage(
                     model = logoUrl,
                     contentDescription = league.league.name,
-                    modifier = Modifier.size(48.dp)
+                    modifier = Modifier.size(Dimens.iconXLarge)
                 )
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(Dimens.paddingDefault))
             }
             
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = league.league?.name ?: "Unknown",
-                    fontSize = 18.sp,
+                    fontSize = Dimens.textMedium,
                     fontWeight = FontWeight.Bold
                 )
                 league.country?.name?.let { country ->
                     Text(
                         text = country,
-                        fontSize = 14.sp,
+                        fontSize = Dimens.textSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                     )
                 }

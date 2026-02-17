@@ -6,14 +6,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.Team
 import com.example.goalpulse.ui.viewmodel.FootballViewModel
@@ -24,6 +24,7 @@ import com.example.goalpulse.ui.viewmodel.TeamsUiState
 fun TeamsScreen(
     viewModel: FootballViewModel,
     onNavigateToDetail: (String) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val teamsState by viewModel.teamsState.collectAsState()
@@ -33,17 +34,28 @@ fun TeamsScreen(
         viewModel.loadPopularTeams()
     }
     
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text(
-            text = "Football Teams",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Football Teams") },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(
+                    start = Dimens.paddingDefault,
+                    end = Dimens.paddingDefault,
+                    bottom = Dimens.paddingDefault
+                )
+        ) {
         
         OutlinedTextField(
             value = searchQuery,
@@ -57,10 +69,10 @@ fun TeamsScreen(
                 Icon(Icons.Default.Search, contentDescription = "Search")
             },
             singleLine = true,
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(Dimens.cornerRadiusSmall)
         )
         
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(Dimens.paddingDefault))
         
         when (val state = teamsState) {
             is TeamsUiState.Idle -> {
@@ -89,7 +101,7 @@ fun TeamsScreen(
                     }
                 } else {
                     LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                        verticalArrangement = Arrangement.spacedBy(Dimens.spacingDefault)
                     ) {
                         items(state.teams) { team ->
                             TeamItem(
@@ -110,7 +122,7 @@ fun TeamsScreen(
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(Dimens.paddingDefault)
                     ) {
                         Text(
                             text = state.message,
@@ -118,13 +130,14 @@ fun TeamsScreen(
                             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(Dimens.paddingDefault))
                         Button(onClick = { viewModel.searchTeams(searchQuery) }) {
                             Text("Retry")
                         }
                     }
                 }
             }
+        }
         }
     }
 }
@@ -138,7 +151,7 @@ fun TeamItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(Dimens.cornerRadiusSmall),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
@@ -146,35 +159,35 @@ fun TeamItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(Dimens.paddingDefault),
             verticalAlignment = Alignment.CenterVertically
         ) {
             team.team?.logo?.let { logoUrl ->
                 AsyncImage(
                     model = logoUrl,
                     contentDescription = team.team.name,
-                    modifier = Modifier.size(64.dp)
+                    modifier = Modifier.size(Dimens.iconXXLarge)
                 )
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(Dimens.paddingDefault))
             }
             
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = team.team?.name ?: "Unknown",
-                    fontSize = 18.sp,
+                    fontSize = Dimens.textMedium,
                     fontWeight = FontWeight.Bold
                 )
                 team.team?.country?.let { country ->
                     Text(
                         text = country,
-                        fontSize = 14.sp,
+                        fontSize = Dimens.textSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                     )
                 }
                 team.venue?.name?.let { venue ->
                     Text(
                         text = venue,
-                        fontSize = 12.sp,
+                        fontSize = Dimens.textExtraSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                     )
                 }

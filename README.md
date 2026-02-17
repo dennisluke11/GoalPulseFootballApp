@@ -46,13 +46,20 @@ The app follows **MVVM (Model-View-ViewModel)** architecture pattern:
 
 ### 2. Configure API Key
 
-Open `app/src/main/java/com/example/goalpulse/di/AppModule.kt` and replace `"YOUR_API_KEY_HERE"` with your actual API key:
+1. Copy the template file to the config directory:
+   ```bash
+   cp app/ApiConfig.template.kt app/src/main/java/com/example/goalpulse/config/ApiConfig.kt
+   ```
+
+2. Open `app/src/main/java/com/example/goalpulse/config/ApiConfig.kt` and replace `"YOUR_API_KEY_HERE"` with your actual API key:
 
 ```kotlin
-single<String> { 
-    "YOUR_ACTUAL_API_KEY_HERE"
+object ApiConfig {
+    const val API_KEY = "YOUR_ACTUAL_API_KEY_HERE"
 }
 ```
+
+**Important**: The `ApiConfig.kt` file is gitignored and will never be committed to the repository. Only the template file is tracked.
 
 **Note**: For production apps, consider storing the API key in:
 - `local.properties` (for local development)

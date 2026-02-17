@@ -7,8 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.goalpulse.ui.theme.Dimens
 
 @Composable
 fun HomeScreen(
@@ -19,26 +18,26 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(Dimens.paddingDefault),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = "GoalPulse",
-            fontSize = 32.sp,
+            fontSize = Dimens.textHuge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
         )
         
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(Dimens.spacingSmall))
         
         Text(
             text = "Your Football Companion",
-            fontSize = 16.sp,
+            fontSize = Dimens.textDefault,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         
-        Spacer(modifier = Modifier.height(48.dp))
+        Spacer(modifier = Modifier.height(Dimens.spacingXXLarge))
         
         NavigationCard(
             title = "Leagues",
@@ -46,7 +45,7 @@ fun HomeScreen(
             onClick = onNavigateToLeagues
         )
         
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(Dimens.paddingDefault))
         
         NavigationCard(
             title = "Teams",
@@ -54,7 +53,7 @@ fun HomeScreen(
             onClick = onNavigateToTeams
         )
         
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(Dimens.paddingDefault))
         
         NavigationCard(
             title = "Fixtures",
@@ -74,8 +73,8 @@ fun NavigationCard(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp),
-        shape = RoundedCornerShape(12.dp),
+            .height(Dimens.cardHeight),
+        shape = RoundedCornerShape(Dimens.cornerRadiusSmall),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
@@ -83,19 +82,19 @@ fun NavigationCard(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(Dimens.paddingDefault),
             verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = title,
-                fontSize = 20.sp,
+                fontSize = Dimens.textLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(Dimens.spacingExtraSmall))
             Text(
                 text = description,
-                fontSize = 14.sp,
+                fontSize = Dimens.textSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
         }
