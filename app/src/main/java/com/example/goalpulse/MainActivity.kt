@@ -22,7 +22,9 @@ import com.example.goalpulse.ui.screens.LeaguesScreen
 import com.example.goalpulse.ui.screens.TeamDetailScreen
 import com.example.goalpulse.ui.screens.TeamsScreen
 import com.example.goalpulse.ui.theme.GoalPulseTheme
-import com.example.goalpulse.ui.viewmodel.FootballViewModel
+import com.example.goalpulse.ui.viewmodel.FixturesViewModel
+import com.example.goalpulse.ui.viewmodel.LeaguesViewModel
+import com.example.goalpulse.ui.viewmodel.TeamsViewModel
 import org.koin.androidx.compose.koinViewModel
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
@@ -47,7 +49,6 @@ class MainActivity : ComponentActivity() {
 @androidx.compose.runtime.Composable
 fun GoalPulseNavigation() {
     val navController = rememberNavController()
-    val viewModel: FootballViewModel = koinViewModel()
     
     NavHost(
         navController = navController,
@@ -62,8 +63,9 @@ fun GoalPulseNavigation() {
         }
         
         composable(Screen.Leagues.route) {
+            val leaguesViewModel: LeaguesViewModel = koinViewModel()
             LeaguesScreen(
-                viewModel = viewModel,
+                viewModel = leaguesViewModel,
                 onNavigateToDetail = { leagueJson ->
                     navController.navigate(Screen.LeagueDetail.createRoute(leagueJson))
                 },
@@ -72,8 +74,9 @@ fun GoalPulseNavigation() {
         }
         
         composable(Screen.Teams.route) {
+            val teamsViewModel: TeamsViewModel = koinViewModel()
             TeamsScreen(
-                viewModel = viewModel,
+                viewModel = teamsViewModel,
                 onNavigateToDetail = { teamJson ->
                     navController.navigate(Screen.TeamDetail.createRoute(teamJson))
                 },
@@ -82,8 +85,9 @@ fun GoalPulseNavigation() {
         }
         
         composable(Screen.Fixtures.route) {
+            val fixturesViewModel: FixturesViewModel = koinViewModel()
             FixturesScreen(
-                viewModel = viewModel,
+                viewModel = fixturesViewModel,
                 onNavigateToDetail = { fixtureJson ->
                     navController.navigate(Screen.FixtureDetail.createRoute(fixtureJson))
                 },

@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.Fixture
-import com.example.goalpulse.ui.viewmodel.FootballViewModel
+import com.example.goalpulse.ui.viewmodel.FixturesViewModel
 import com.example.goalpulse.ui.viewmodel.FixturesUiState
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,7 +23,7 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FixturesScreen(
-    viewModel: FootballViewModel,
+    viewModel: FixturesViewModel,
     onNavigateToDetail: (String) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
