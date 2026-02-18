@@ -4,34 +4,40 @@ A modern Android football application built with Kotlin, Jetpack Compose, MVVM a
 
 ## Features
 
-- **Search Functionality**: Search for leagues and teams
+- **Search Functionality**: Search for leagues and teams with debounced input
 - **Leagues**: Browse and search football leagues from around the world
 - **Teams**: Discover teams with detailed information
 - **Fixtures**: View upcoming and past football matches
 - **Modern UI**: Built with Jetpack Compose and Material Design 3
 - **Clean Architecture**: MVVM pattern with SOLID principles
-- **Testing**: Comprehensive unit tests for Repository and ViewModel
+- **Testing**: Comprehensive unit tests for all Repositories and ViewModels
+- **Caching**: File-based caching to reduce API calls
 
 ## Architecture
 
 The app follows **MVVM (Model-View-ViewModel)** architecture pattern:
 
-- **Data Layer**: Repository, API Service, Data Models
+- **Data Layer**: Repository interfaces and implementations, API Service, Data Models, Cache Manager
 - **Domain Layer**: Business logic (implicit in ViewModel)
-- **Presentation Layer**: ViewModel, UI (Compose Screens)
+- **Presentation Layer**: ViewModels, UI State classes, UI (Compose Screens)
 
 ### SOLID Principles Implementation
 
 1. **Single Responsibility**: Each class has a single, well-defined responsibility
-   - `FootballRepository`: Handles data operations
-   - `FootballViewModel`: Manages UI state
+   - `LeaguesRepository`, `TeamsRepository`, `FixturesRepository`: Handle data operations for specific entities
+   - `LeaguesViewModel`, `TeamsViewModel`, `FixturesViewModel`: Manage UI state for specific screens
+   - `LeagueDetailViewModel`, `TeamDetailViewModel`, `FixtureDetailViewModel`: Handle detail screen logic
    - `ApiFootballService`: Defines API contracts
+   - `ErrorHandler`: Centralized error handling
+   - `CacheManager`: Manages caching logic
+   - `SeasonCalculator`: Calculates current season
+   - `ApiKeyValidator`: Validates API keys
 
-2. **Open/Closed**: Extensible through interfaces (Repository interface)
+2. **Open/Closed**: Extensible through interfaces (Repository interfaces)
 
 3. **Liskov Substitution**: Repository implementations can be swapped
 
-4. **Interface Segregation**: Focused interfaces (e.g., `ApiFootballService`)
+4. **Interface Segregation**: Focused interfaces (e.g., `LeaguesRepository`, `TeamsRepository`, `FixturesRepository`)
 
 5. **Dependency Inversion**: Dependencies injected via Koin, not hardcoded
 
@@ -76,16 +82,32 @@ object ApiConfig {
 
 ```
 app/src/main/java/com/example/goalpulse/
+├── config/              # App constants and API configuration
 ├── data/
-│   ├── model/          # Data models (League, Team, Fixture)
-│   ├── remote/         # API service and Retrofit client
-│   └── repository/     # Repository interface and implementation
-├── di/                 # Koin dependency injection modules
+│   ├── local/           # Cache manager for file-based caching
+│   ├── model/           # Data models (League, Team, Fixture)
+│   ├── remote/          # API service, Retrofit client, Error handler
+│   └── repository/      # Repository interfaces and implementations
+│       ├── LeaguesRepository.kt
+│       ├── TeamsRepository.kt
+│       ├── FixturesRepository.kt
+│       ├── ApiKeyValidator.kt
+│       └── SeasonCalculator.kt
+├── di/                  # Koin dependency injection modules
 ├── ui/
-│   ├── navigation/     # Navigation routes
-│   ├── screens/        # Compose UI screens
-│   ├── theme/          # Material theme
-│   └── viewmodel/      # ViewModels
+│   ├── components/      # Reusable UI components
+│   ├── navigation/      # Navigation routes
+│   ├── screens/         # Compose UI screens
+│   ├── strings/         # String resources
+│   ├── theme/           # Material theme and dimensions
+│   └── viewmodel/       # ViewModels and UI state classes
+│       ├── LeaguesViewModel.kt
+│       ├── TeamsViewModel.kt
+│       ├── FixturesViewModel.kt
+│       ├── LeagueDetailViewModel.kt
+│       ├── TeamDetailViewModel.kt
+│       └── FixtureDetailViewModel.kt
+├── util/                # Utility classes (DateFormatter)
 ├── GoalPulseApplication.kt
 └── MainActivity.kt
 ```
@@ -97,21 +119,39 @@ app/src/main/java/com/example/goalpulse/
 - **MVVM**: Architecture pattern
 - **Koin**: Dependency injection
 - **Retrofit**: HTTP client for API calls
-- **Coroutines**: Asynchronous programming
+- **Coroutines**: Asynchronous programming with Flow
 - **Navigation Compose**: Navigation between screens
 - **Coil**: Image loading
 - **Material Design 3**: UI components
+- **Turbine**: Flow testing library
+- **MockK**: Mocking library for unit tests
 
 ## Testing
 
 The project includes comprehensive unit tests:
 
-- `FootballRepositoryTest`: Tests repository data operations
-- `FootballViewModelTest`: Tests ViewModel state management
+### ViewModel Tests
+- `LeaguesViewModelTest`: Tests leagues state management, search, and error handling
+- `TeamsViewModelTest`: Tests teams state management, search, and popular teams loading
+- `FixturesViewModelTest`: Tests fixtures loading with various parameters
+- `LeagueDetailViewModelTest`: Tests league detail parsing and error handling
+- `TeamDetailViewModelTest`: Tests team detail parsing and error handling
+- `FixtureDetailViewModelTest`: Tests fixture detail parsing and error handling
+
+### Repository Tests
+- `LeaguesRepositoryTest`: Tests leagues repository caching and API calls
+- `TeamsRepositoryTest`: Tests teams repository caching, search, and API calls
+- `FixturesRepositoryTest`: Tests fixtures repository caching and API calls
 
 Run tests with:
 ```bash
 ./gradlew test
+```
+
+Run specific test classes:
+```bash
+./gradlew test --tests "com.example.goalpulse.ui.viewmodel.*"
+./gradlew test --tests "com.example.goalpulse.data.repository.*"
 ```
 
 ## API Documentation
@@ -121,4 +161,3 @@ This app uses the [API-Football](https://www.api-football.com/documentation-v3) 
 ## License
 
 This project is created for educational purposes.
-
