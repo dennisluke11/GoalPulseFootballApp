@@ -29,7 +29,7 @@ fun TeamsScreen(
     modifier: Modifier = Modifier
 ) {
     val teamsState by viewModel.teamsState.collectAsState()
-    var searchQuery by remember { mutableStateOf("") }
+    val searchQuery by viewModel.searchQuery.collectAsState()
     
     LaunchedEffect(Unit) {
         viewModel.loadPopularTeams()
@@ -61,8 +61,7 @@ fun TeamsScreen(
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { query ->
-                searchQuery = query
-                viewModel.searchTeams(query)
+                viewModel.updateSearchQuery(query)
             },
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text(Strings.SEARCH_TEAMS_PLACEHOLDER) },
@@ -132,7 +131,13 @@ fun TeamsScreen(
                             modifier = Modifier.fillMaxWidth()
                         )
                         Spacer(modifier = Modifier.height(Dimens.paddingDefault))
-                        Button(onClick = { viewModel.searchTeams(searchQuery) }) {
+                        Button(onClick = { 
+                            if (searchQuery.isBlank()) {
+                                viewModel.loadPopularTeams()
+                            } else {
+                                viewModel.searchTeams(searchQuery)
+                            }
+                        }) {
                             Text(Strings.RETRY)
                         }
                     }

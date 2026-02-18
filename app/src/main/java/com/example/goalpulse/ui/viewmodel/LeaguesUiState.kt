@@ -9,3 +9,5 @@ sealed class LeaguesUiState {
     data class Error(val message: String) : LeaguesUiState()
 }
 
+
+

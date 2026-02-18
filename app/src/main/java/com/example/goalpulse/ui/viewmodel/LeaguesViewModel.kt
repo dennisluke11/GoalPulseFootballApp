@@ -19,10 +19,18 @@ class LeaguesViewModel(
     private val _leaguesState = MutableStateFlow<LeaguesUiState>(LeaguesUiState.Idle)
     val leaguesState: StateFlow<LeaguesUiState> = _leaguesState.asStateFlow()
     
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+    
     private var searchLeaguesJob: Job? = null
     
     init {
         loadAllLeagues()
+    }
+    
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+        searchLeagues(query)
     }
     
     fun searchLeagues(query: String) {

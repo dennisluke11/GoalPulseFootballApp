@@ -29,7 +29,7 @@ fun LeaguesScreen(
     modifier: Modifier = Modifier
 ) {
     val leaguesState by viewModel.leaguesState.collectAsState()
-    var searchQuery by remember { mutableStateOf("") }
+    val searchQuery by viewModel.searchQuery.collectAsState()
     
     Scaffold(
         topBar = {
@@ -57,8 +57,7 @@ fun LeaguesScreen(
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { query ->
-                searchQuery = query
-                viewModel.searchLeagues(query)
+                viewModel.updateSearchQuery(query)
             },
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text(Strings.SEARCH_LEAGUES_PLACEHOLDER) },

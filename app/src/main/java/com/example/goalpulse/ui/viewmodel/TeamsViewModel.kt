@@ -19,8 +19,16 @@ class TeamsViewModel(
     private val _teamsState = MutableStateFlow<TeamsUiState>(TeamsUiState.Idle)
     val teamsState: StateFlow<TeamsUiState> = _teamsState.asStateFlow()
     
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+    
     private var searchTeamsJob: Job? = null
     private var loadPopularTeamsJob: Job? = null
+    
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+        searchTeams(query)
+    }
     
     fun searchTeams(query: String) {
         searchTeamsJob?.cancel()

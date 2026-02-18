@@ -9,3 +9,5 @@ sealed class FixturesUiState {
     data class Error(val message: String) : FixturesUiState()
 }
 
+
+
