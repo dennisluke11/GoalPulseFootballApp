@@ -4,13 +4,13 @@ A modern Android football application built with Kotlin, Jetpack Compose, MVVM a
 
 ## Features
 
-- 🔍 **Search Functionality**: Search for leagues and teams
-- 📊 **Leagues**: Browse and search football leagues from around the world
-- ⚽ **Teams**: Discover teams with detailed information
-- 📅 **Fixtures**: View upcoming and past football matches
-- 🎨 **Modern UI**: Built with Jetpack Compose and Material Design 3
-- 🏗️ **Clean Architecture**: MVVM pattern with SOLID principles
-- 🧪 **Testing**: Comprehensive unit tests for Repository and ViewModel
+- **Search Functionality**: Search for leagues and teams
+- **Leagues**: Browse and search football leagues from around the world
+- **Teams**: Discover teams with detailed information
+- **Fixtures**: View upcoming and past football matches
+- **Modern UI**: Built with Jetpack Compose and Material Design 3
+- **Clean Architecture**: MVVM pattern with SOLID principles
+- **Testing**: Comprehensive unit tests for Repository and ViewModel
 
 ## Architecture
 
