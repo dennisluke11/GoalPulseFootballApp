@@ -9,12 +9,13 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class FixtureDetailViewModel : ViewModel() {
     
+    private val gson = Gson()
     private val _fixtureDetailState = MutableStateFlow<FixtureDetailUiState>(FixtureDetailUiState.Loading)
     val fixtureDetailState: StateFlow<FixtureDetailUiState> = _fixtureDetailState.asStateFlow()
     
     fun loadFixture(fixtureJson: String) {
         try {
-            val fixture = Gson().fromJson(fixtureJson, Fixture::class.java)
+            val fixture = gson.fromJson(fixtureJson, Fixture::class.java)
             if (fixture != null) {
                 _fixtureDetailState.value = FixtureDetailUiState.Success(fixture)
             } else {

@@ -9,12 +9,13 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class LeagueDetailViewModel : ViewModel() {
     
+    private val gson = Gson()
     private val _leagueDetailState = MutableStateFlow<LeagueDetailUiState>(LeagueDetailUiState.Loading)
     val leagueDetailState: StateFlow<LeagueDetailUiState> = _leagueDetailState.asStateFlow()
     
     fun loadLeague(leagueJson: String) {
         try {
-            val league = Gson().fromJson(leagueJson, League::class.java)
+            val league = gson.fromJson(leagueJson, League::class.java)
             if (league != null) {
                 _leagueDetailState.value = LeagueDetailUiState.Success(league)
             } else {

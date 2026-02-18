@@ -18,8 +18,8 @@ import coil.compose.AsyncImage
 import com.example.goalpulse.data.model.Fixture
 import com.example.goalpulse.ui.viewmodel.FixturesViewModel
 import com.example.goalpulse.ui.viewmodel.FixturesUiState
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.goalpulse.util.DateFormatter
+import com.example.goalpulse.config.AppConstants
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +32,7 @@ fun FixturesScreen(
     val fixturesState by viewModel.fixturesState.collectAsState()
     
     LaunchedEffect(Unit) {
-        viewModel.loadFixtures(leagueId = 39)
+        viewModel.loadFixtures(leagueId = AppConstants.PREMIER_LEAGUE_ID)
     }
     
     Scaffold(
@@ -259,7 +259,7 @@ fun FixtureItem(
             ) {
                 fixture.fixture?.date?.let { dateString ->
                     Text(
-                        text = formatDate(dateString),
+                        text = DateFormatter.formatDate(dateString),
                         fontSize = Dimens.textExtraSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                     )
@@ -273,17 +273,6 @@ fun FixtureItem(
                 }
             }
         }
-    }
-}
-
-private fun formatDate(dateString: String): String {
-    return try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault())
-        val date = inputFormat.parse(dateString)
-        date?.let { outputFormat.format(it) } ?: dateString
-    } catch (e: Exception) {
-        dateString
     }
 }
 

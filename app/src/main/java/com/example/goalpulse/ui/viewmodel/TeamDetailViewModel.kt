@@ -9,12 +9,13 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class TeamDetailViewModel : ViewModel() {
     
+    private val gson = Gson()
     private val _teamDetailState = MutableStateFlow<TeamDetailUiState>(TeamDetailUiState.Loading)
     val teamDetailState: StateFlow<TeamDetailUiState> = _teamDetailState.asStateFlow()
     
     fun loadTeam(teamJson: String) {
         try {
-            val team = Gson().fromJson(teamJson, Team::class.java)
+            val team = gson.fromJson(teamJson, Team::class.java)
             if (team != null) {
                 _teamDetailState.value = TeamDetailUiState.Success(team)
             } else {

@@ -2,6 +2,7 @@ package com.example.goalpulse.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.goalpulse.config.AppConstants
 import com.example.goalpulse.data.repository.TeamsRepository
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.Job
@@ -41,7 +42,7 @@ class TeamsViewModel(
         
         searchTeamsJob = viewModelScope.launch {
             try {
-                delay(300)
+                delay(AppConstants.SEARCH_DEBOUNCE_DELAY_MS)
                 ensureActive()
                 _teamsState.value = TeamsUiState.Loading
                 repository.searchTeams(query)
@@ -72,7 +73,7 @@ class TeamsViewModel(
             try {
                 ensureActive()
                 _teamsState.value = TeamsUiState.Loading
-                repository.getTeamsByLeague(39)
+                repository.getTeamsByLeague(AppConstants.PREMIER_LEAGUE_ID)
                     .onSuccess { teams ->
                         ensureActive()
                         _teamsState.value = TeamsUiState.Success(teams)

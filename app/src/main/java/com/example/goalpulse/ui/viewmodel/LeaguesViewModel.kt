@@ -2,6 +2,7 @@ package com.example.goalpulse.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.goalpulse.config.AppConstants
 import com.example.goalpulse.data.repository.LeaguesRepository
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.Job
@@ -43,7 +44,7 @@ class LeaguesViewModel(
         
         searchLeaguesJob = viewModelScope.launch {
             try {
-                delay(300)
+                delay(AppConstants.SEARCH_DEBOUNCE_DELAY_MS)
                 ensureActive()
                 _leaguesState.value = LeaguesUiState.Loading
                 repository.searchLeagues(query)

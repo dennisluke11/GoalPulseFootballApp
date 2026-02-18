@@ -14,11 +14,11 @@ import androidx.compose.ui.text.font.FontWeight
 import com.example.goalpulse.ui.strings.Strings
 import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
+import com.example.goalpulse.ui.components.DetailRow
 import com.example.goalpulse.ui.viewmodel.FixtureDetailViewModel
 import com.example.goalpulse.ui.viewmodel.FixtureDetailUiState
+import com.example.goalpulse.util.DateFormatter
 import org.koin.androidx.compose.koinViewModel
-import java.text.SimpleDateFormat
-import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,14 +59,14 @@ fun FixtureDetailScreen(
             }
             is FixtureDetailUiState.Success -> {
                 val fixture = state.fixture
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .verticalScroll(rememberScrollState())
-                    .padding(Dimens.paddingDefault),
-                verticalArrangement = Arrangement.spacedBy(Dimens.paddingDefault)
-            ) {
+                Column(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .verticalScroll(rememberScrollState())
+                        .padding(Dimens.paddingDefault),
+                    verticalArrangement = Arrangement.spacedBy(Dimens.paddingDefault)
+                ) {
                 fixture.league?.let { league ->
                     Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -202,7 +202,7 @@ fun FixtureDetailScreen(
                             
                             DetailRow(Strings.FIXTURE_ID, fixtureInfo.id.toString())
                             fixtureInfo.date?.let { date ->
-                                DetailRow(Strings.DATE, formatDate(date))
+                                DetailRow(Strings.DATE, DateFormatter.formatDate(date))
                             }
                             fixtureInfo.status?.let { status ->
                                 DetailRow(Strings.STATUS, status.long ?: status.short ?: Strings.NOT_AVAILABLE)
@@ -271,6 +271,7 @@ fun FixtureDetailScreen(
                         }
                     }
                 }
+                }
             }
             is FixtureDetailUiState.Error -> {
                 Box(
@@ -297,38 +298,6 @@ fun FixtureDetailScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun DetailRow(label: String, value: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = label,
-            fontSize = Dimens.textSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.weight(1f)
-        )
-        Text(
-            text = value,
-            fontSize = Dimens.textSmall,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.weight(1f)
-        )
-    }
-}
-
-private fun formatDate(dateString: String): String {
-    return try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault())
-        val date = inputFormat.parse(dateString)
-        date?.let { outputFormat.format(it) } ?: dateString
-    } catch (e: Exception) {
-        dateString
     }
 }
 

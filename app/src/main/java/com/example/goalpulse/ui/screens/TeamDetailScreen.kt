@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import com.example.goalpulse.ui.strings.Strings
 import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
+import com.example.goalpulse.ui.components.DetailRow
 import com.example.goalpulse.ui.viewmodel.TeamDetailViewModel
 import com.example.goalpulse.ui.viewmodel.TeamDetailUiState
 import org.koin.androidx.compose.koinViewModel
@@ -178,6 +179,7 @@ fun TeamDetailScreen(
                         }
                     }
                 }
+                }
             }
             is TeamDetailUiState.Error -> {
                 Box(
@@ -204,27 +206,6 @@ fun TeamDetailScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun DetailRow(label: String, value: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = label,
-            fontSize = Dimens.textSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.weight(1f)
-        )
-        Text(
-            text = value,
-            fontSize = Dimens.textSmall,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.weight(1f)
-        )
     }
 }
 
