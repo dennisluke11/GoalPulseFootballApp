@@ -74,11 +74,11 @@ class LeaguesViewModelTest {
         val viewModel = LeaguesViewModel(repository)
 
         viewModel.leaguesState.test {
-            awaitItem() // Idle
+            awaitItem()
             advanceUntilIdle()
-            awaitItem() // Loading from init
+            awaitItem()
             advanceUntilIdle()
-            awaitItem() // Success from init
+            awaitItem()
 
             viewModel.searchLeagues(query)
             advanceTimeBy(AppConstants.SEARCH_DEBOUNCE_DELAY_MS)
@@ -106,11 +106,11 @@ class LeaguesViewModelTest {
         val viewModel = LeaguesViewModel(repository)
 
         viewModel.leaguesState.test {
-            awaitItem() // Idle
+            awaitItem()
             advanceUntilIdle()
-            awaitItem() // Loading from init
+            awaitItem()
             advanceUntilIdle()
-            awaitItem() // Success from init
+            awaitItem()
 
             viewModel.searchLeagues(query)
             advanceTimeBy(AppConstants.SEARCH_DEBOUNCE_DELAY_MS)
@@ -134,11 +134,11 @@ class LeaguesViewModelTest {
         val viewModel = LeaguesViewModel(repository)
 
         viewModel.leaguesState.test {
-            awaitItem() // Idle
+            awaitItem()
             advanceUntilIdle()
-            awaitItem() // Loading from init
+            awaitItem()
             advanceUntilIdle()
-            awaitItem() // Success from init
+            awaitItem()
 
             viewModel.searchLeagues("")
             advanceUntilIdle()
@@ -161,7 +161,7 @@ class LeaguesViewModelTest {
         val viewModel = LeaguesViewModel(repository)
 
         viewModel.searchQuery.test {
-            awaitItem() // Skip initial empty string
+            awaitItem()
 
             viewModel.updateSearchQuery(query)
             advanceTimeBy(AppConstants.SEARCH_DEBOUNCE_DELAY_MS)
@@ -198,11 +198,11 @@ class LeaguesViewModelTest {
         val viewModel = LeaguesViewModel(repository)
 
         viewModel.leaguesState.test {
-            awaitItem() // Idle
+            awaitItem()
             advanceUntilIdle()
-            awaitItem() // Loading from init
+            awaitItem()
             advanceUntilIdle()
-            awaitItem() // Success from init
+            awaitItem()
 
             viewModel.loadAllLeagues()
             advanceUntilIdle()

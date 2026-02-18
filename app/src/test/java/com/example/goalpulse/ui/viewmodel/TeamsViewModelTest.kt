@@ -148,7 +148,7 @@ class TeamsViewModelTest {
         val viewModel = TeamsViewModel(repository)
 
         viewModel.searchQuery.test {
-            awaitItem() // Skip initial empty string
+            awaitItem()
 
             viewModel.updateSearchQuery(query)
             advanceTimeBy(AppConstants.SEARCH_DEBOUNCE_DELAY_MS)
