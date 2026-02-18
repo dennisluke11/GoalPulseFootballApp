@@ -23,8 +23,11 @@ import com.example.goalpulse.ui.screens.TeamDetailScreen
 import com.example.goalpulse.ui.screens.TeamsScreen
 import com.example.goalpulse.ui.theme.GoalPulseTheme
 import com.example.goalpulse.ui.viewmodel.FixturesViewModel
+import com.example.goalpulse.ui.viewmodel.FixtureDetailViewModel
 import com.example.goalpulse.ui.viewmodel.LeaguesViewModel
+import com.example.goalpulse.ui.viewmodel.LeagueDetailViewModel
 import com.example.goalpulse.ui.viewmodel.TeamsViewModel
+import com.example.goalpulse.ui.viewmodel.TeamDetailViewModel
 import org.koin.androidx.compose.koinViewModel
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
@@ -103,8 +106,10 @@ fun GoalPulseNavigation() {
                 backStackEntry.arguments?.getString("leagueJson") ?: "",
                 StandardCharsets.UTF_8.toString()
             )
+            val leagueDetailViewModel: LeagueDetailViewModel = koinViewModel()
             LeagueDetailScreen(
                 leagueJson = leagueJson,
+                viewModel = leagueDetailViewModel,
                 onBackClick = { navController.popBackStack() }
             )
         }
@@ -117,8 +122,10 @@ fun GoalPulseNavigation() {
                 backStackEntry.arguments?.getString("teamJson") ?: "",
                 StandardCharsets.UTF_8.toString()
             )
+            val teamDetailViewModel: TeamDetailViewModel = koinViewModel()
             TeamDetailScreen(
                 teamJson = teamJson,
+                viewModel = teamDetailViewModel,
                 onBackClick = { navController.popBackStack() }
             )
         }
@@ -131,8 +138,10 @@ fun GoalPulseNavigation() {
                 backStackEntry.arguments?.getString("fixtureJson") ?: "",
                 StandardCharsets.UTF_8.toString()
             )
+            val fixtureDetailViewModel: FixtureDetailViewModel = koinViewModel()
             FixtureDetailScreen(
                 fixtureJson = fixtureJson,
+                viewModel = fixtureDetailViewModel,
                 onBackClick = { navController.popBackStack() }
             )
         }

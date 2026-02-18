@@ -7,27 +7,29 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.example.goalpulse.ui.strings.Strings
 import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
-import com.example.goalpulse.data.model.Team
-import com.google.gson.Gson
+import com.example.goalpulse.ui.viewmodel.TeamDetailViewModel
+import com.example.goalpulse.ui.viewmodel.TeamDetailUiState
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TeamDetailScreen(
     teamJson: String,
+    viewModel: TeamDetailViewModel = koinViewModel(),
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val team = try {
-        Gson().fromJson(teamJson, Team::class.java)
-    } catch (e: Exception) {
-        null
+    val teamDetailState by viewModel.teamDetailState.collectAsState()
+    
+    LaunchedEffect(teamJson) {
+        viewModel.loadTeam(teamJson)
     }
     
     Scaffold(
@@ -42,16 +44,19 @@ fun TeamDetailScreen(
             )
         }
     ) { paddingValues ->
-        if (team == null) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(Strings.FAILED_LOAD_TEAM)
+        when (val state = teamDetailState) {
+            is TeamDetailUiState.Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
-        } else {
+            is TeamDetailUiState.Success -> {
+                val team = state.team
             Column(
                 modifier = modifier
                     .fillMaxSize()
@@ -170,6 +175,30 @@ fun TeamDetailScreen(
                                         .height(Dimens.imageDetail)
                                 )
                             }
+                        }
+                    }
+                }
+            }
+            is TeamDetailUiState.Error -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(Dimens.paddingDefault)
+                    ) {
+                        Text(
+                            text = state.message,
+                            color = MaterialTheme.colorScheme.error,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Spacer(modifier = Modifier.height(Dimens.paddingDefault))
+                        Button(onClick = { viewModel.loadTeam(teamJson) }) {
+                            Text(Strings.RETRY)
                         }
                     }
                 }

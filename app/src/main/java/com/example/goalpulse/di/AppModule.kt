@@ -11,8 +11,11 @@ import com.example.goalpulse.data.repository.LeaguesRepositoryImpl
 import com.example.goalpulse.data.repository.TeamsRepository
 import com.example.goalpulse.data.repository.TeamsRepositoryImpl
 import com.example.goalpulse.ui.viewmodel.FixturesViewModel
+import com.example.goalpulse.ui.viewmodel.FixtureDetailViewModel
 import com.example.goalpulse.ui.viewmodel.LeaguesViewModel
+import com.example.goalpulse.ui.viewmodel.LeagueDetailViewModel
 import com.example.goalpulse.ui.viewmodel.TeamsViewModel
+import com.example.goalpulse.ui.viewmodel.TeamDetailViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -71,6 +74,18 @@ val appModule = module {
         FixturesViewModel(
             repository = get()
         )
+    }
+    
+    viewModel {
+        LeagueDetailViewModel()
+    }
+    
+    viewModel {
+        TeamDetailViewModel()
+    }
+    
+    viewModel {
+        FixtureDetailViewModel()
     }
 }
 

@@ -7,15 +7,16 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.example.goalpulse.ui.strings.Strings
 import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
-import com.example.goalpulse.data.model.Fixture
-import com.google.gson.Gson
+import com.example.goalpulse.ui.viewmodel.FixtureDetailViewModel
+import com.example.goalpulse.ui.viewmodel.FixtureDetailUiState
+import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,13 +24,14 @@ import java.util.*
 @Composable
 fun FixtureDetailScreen(
     fixtureJson: String,
+    viewModel: FixtureDetailViewModel = koinViewModel(),
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val fixture = try {
-        Gson().fromJson(fixtureJson, Fixture::class.java)
-    } catch (e: Exception) {
-        null
+    val fixtureDetailState by viewModel.fixtureDetailState.collectAsState()
+    
+    LaunchedEffect(fixtureJson) {
+        viewModel.loadFixture(fixtureJson)
     }
     
     Scaffold(
@@ -44,16 +46,19 @@ fun FixtureDetailScreen(
             )
         }
     ) { paddingValues ->
-        if (fixture == null) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(Strings.FAILED_LOAD_FIXTURE)
+        when (val state = fixtureDetailState) {
+            is FixtureDetailUiState.Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
-        } else {
+            is FixtureDetailUiState.Success -> {
+                val fixture = state.fixture
             Column(
                 modifier = modifier
                     .fillMaxSize()
@@ -263,6 +268,30 @@ fun FixtureDetailScreen(
                             score.halftime?.let { halftime ->
                                 DetailRow(Strings.HALF_TIME, "${halftime.home ?: "-"} - ${halftime.away ?: "-"}")
                             }
+                        }
+                    }
+                }
+            }
+            is FixtureDetailUiState.Error -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(Dimens.paddingDefault)
+                    ) {
+                        Text(
+                            text = state.message,
+                            color = MaterialTheme.colorScheme.error,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Spacer(modifier = Modifier.height(Dimens.paddingDefault))
+                        Button(onClick = { viewModel.loadFixture(fixtureJson) }) {
+                            Text(Strings.RETRY)
                         }
                     }
                 }

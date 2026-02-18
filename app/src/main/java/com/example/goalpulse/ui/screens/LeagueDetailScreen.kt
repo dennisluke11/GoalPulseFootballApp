@@ -7,27 +7,29 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.example.goalpulse.ui.strings.Strings
 import com.example.goalpulse.ui.theme.Dimens
 import coil.compose.AsyncImage
-import com.example.goalpulse.data.model.League
-import com.google.gson.Gson
+import com.example.goalpulse.ui.viewmodel.LeagueDetailViewModel
+import com.example.goalpulse.ui.viewmodel.LeagueDetailUiState
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LeagueDetailScreen(
     leagueJson: String,
+    viewModel: LeagueDetailViewModel = koinViewModel(),
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val league = try {
-        Gson().fromJson(leagueJson, League::class.java)
-    } catch (e: Exception) {
-        null
+    val leagueDetailState by viewModel.leagueDetailState.collectAsState()
+    
+    LaunchedEffect(leagueJson) {
+        viewModel.loadLeague(leagueJson)
     }
     
     Scaffold(
@@ -42,16 +44,19 @@ fun LeagueDetailScreen(
             )
         }
     ) { paddingValues ->
-        if (league == null) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(Strings.FAILED_LOAD_LEAGUE)
+        when (val state = leagueDetailState) {
+            is LeagueDetailUiState.Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
-        } else {
+            is LeagueDetailUiState.Success -> {
+                val league = state.league
             Column(
                 modifier = modifier
                     .fillMaxSize()
@@ -157,6 +162,30 @@ fun LeagueDetailScreen(
                             }
                             
                             DetailRow(Strings.COUNTRY_CODE, country.code ?: Strings.NOT_AVAILABLE)
+                        }
+                    }
+                }
+            }
+            is LeagueDetailUiState.Error -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(Dimens.paddingDefault)
+                    ) {
+                        Text(
+                            text = state.message,
+                            color = MaterialTheme.colorScheme.error,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Spacer(modifier = Modifier.height(Dimens.paddingDefault))
+                        Button(onClick = { viewModel.loadLeague(leagueJson) }) {
+                            Text(Strings.RETRY)
                         }
                     }
                 }
